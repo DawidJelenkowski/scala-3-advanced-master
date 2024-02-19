@@ -22,7 +22,7 @@ object DarkSugars {
   }
 
   // with hofs
-  val anIncrementedList = List(1,2,3).map { x =>
+  val anIncrementedList = List(1,2,3).map {x =>
     // code block
     x + 1
   }
@@ -37,8 +37,8 @@ object DarkSugars {
     override def act(x: Int): Int = x + 1
   }
 
-  val anotherAction: Action = (x: Int) => x + 1 // new Action { override def act(x: Int): Int = x + 1 }
-  println(anotherAction.act(42))
+  val anotherAction: Action = (x: Int) => x + 1 // new Action {override def act(x: Int): Int = x + 1}
+  // println(anotherAction.act(42))
 
   // example: Runnable
   val aThread = new Thread(new Runnable {
@@ -47,8 +47,66 @@ object DarkSugars {
 
   val aSweeterThread = new Thread(() => println("Hi, Scala"))
 
+  // 3 - methods ending in a : are right-associative
+  val aList = List(1,2,3)
+  val aPrependedList = 0 :: aList // aList.::(0)
+  val aBigList = 0 :: 1 :: 2 :: 3 :: List(4,5) // List(4,5).::(3).::(2).::(1).::(0)
+
+  class MySteam[T] {
+    infix def -->:(value: T): MySteam[T] = this // impl not important
+  }
+
+  val mySteam = 1 -->: 2 -->: 3 -->: 4 -->: new MySteam[Int]
+
+  // 4 - multi-word identifiers
+  class Talker(name: String) {
+    infix def `and then said`(gossip: String) = println(s"$name said $gossip")
+  }
+
+  val daniel = new Talker("Daniel")
+  val danielStatement = daniel `and then said` "I love Scala"
+
+  // example: HTTP libraries
+  object `Conent-Type` {
+    val `application/json` = "application/JSON"
+  }
+
+  // 5 - infix types
+  import scala.annotation.targetName
+  @targetName("Arrow") // for more readable bytecode + Java interop
+  infix class -->[A, B]
+  val compositeType: Int --> String = new -->[Int, String]
+
+  // 6 - update()
+  val anArray = Array(1,2,3,4)
+  anArray.update(2, 45)
+  anArray.update(2, 45)
+  anArray(2) = 45 // anArray.update(2, 45)
+
+  // 7 - mutable fields
+  class Mutable {
+    private var internalMember: Int = 0
+    def member = internalMember // "getter"
+    def member_=(value: Int): Unit =
+      internalMember = value // "setter"
+  }
+
+  val aMutableContainer = new Mutable
+  aMutableContainer.member = 42 // aMutableContainer.member_=(42)
+
+  // 8 - variable arguments (varargs)
+  def methodWithVarargs(args: Int*) = {
+    // return the number of arguments supplied
+    args.length
+  }
+
+  val callWithZeroArgs = methodWithVarargs()
+  val callWithOneArg = methodWithVarargs(78)
+  val callWithTwoArgs = methodWithVarargs(12, 34)  
+
+  val aCollection = List(1,2,3,4)
+  val callWithDynamicsArgs = methodWithVarargs(aCollection*)
 
   def main(args: Array[String]): Unit = {
-
   }
 }
