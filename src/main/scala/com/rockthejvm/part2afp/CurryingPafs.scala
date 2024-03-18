@@ -72,7 +72,7 @@ object CurryingPafs {
 
   byName(23) // ok
   byName(method) // 43. eta-expanded? NO - method is INVOKED here
-  byName(parenMethod) // 43. eta-expanded? YES
+  byName(parenMethod()) // 43. eta-expanded? YES
   // byName(parenMethod()) // not ok
   byName((() => 42)()) // ok
   // byName(() => 42) // not ok
