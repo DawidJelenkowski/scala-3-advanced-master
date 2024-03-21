@@ -1,7 +1,5 @@
 package com.rockthejvm.practice
 
-import scala.annotation.tailrec
-
 abstract class FSet[A] extends (A => Boolean) {
 
   def head: A
@@ -92,7 +90,7 @@ case class Cons[A](head: A, tail: FSet[A]) extends FSet[A] {
     else Cons(elem, this)
   }
   infix def ++(anotherSet: FSet[A]): FSet[A] = { // tail ++ anotherSet + head
-    @tailrec
+    @scala.annotation.tailrec
     def concatTailrec(remainingList: FSet[A], accumulator: FSet[A]): FSet[A] = {
       if (remainingList == Empty()) accumulator
       else concatTailrec(remainingList.tail, accumulator + remainingList.head)
@@ -127,7 +125,7 @@ case class Cons[A](head: A, tail: FSet[A]) extends FSet[A] {
 }
 object FSet {
   def apply[A](values: A*): FSet[A] = {
-    @tailrec
+    @scala.annotation.tailrec
     def buildSet(valuesSeq: Seq[A], accumulator: FSet[A]): FSet[A] =
       if valuesSeq.isEmpty then accumulator
       else buildSet(valuesSeq.tail, accumulator + valuesSeq.head)
