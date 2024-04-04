@@ -52,6 +52,7 @@ object JVMConcurrencyIntro {
   }
 
   def main(args: Array[String]): Unit = {
-    demoExecutors()
+    basicThreads()
+    // demoExecutors()
   }
 }
